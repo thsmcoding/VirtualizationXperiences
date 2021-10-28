@@ -1,2 +1,2 @@
 # VirtualizationXperiences
-This repo contains different setups for several virtual environments and tools.
+This repo contains different setups, experiences and tests for several virtual environments and tools.
