@@ -1,26 +1,31 @@
-#!/usr/bin/bash
+#!/bin/bash
 #VARIABLES AND INITIALIZATION
 CURRENT=$pwd
-INSTALL= 'sudo apt-get -y install'
+INSTALL='sudo apt-get -y install'
 CHECK_GCC='$(echo g++ --version|wc -c)'
 EMACSVERSION=emacs27.2
 EMACSPCKG="$EMACSVERSION.tar.gz"
-echo "Setting up Vagrant machine: "$CURRENT	
+echo "Setting up Vagrant machine: "$CURRENT
+	
 #debugging : show commands and lines
 set -u; set -v; set -x
-sudo apt-get -y install
+sudo apt-get -y update
 $INSTALL git
 $INSTALL curl
 sudo apt install build-essential && $INSTALL texinfo libtinfo-dev
 [[ CHECK_GCC -le 0 ]]; echo "MISSING G++ AND GCC">> /dev/stderr
-VAG_HOME=home/vagrant/
-if [[ -d "$VAG_HOME" ]]; then 
+VAG_HOME=/home/vagrant/
+if [[ -d $VAG_HOME ]]; then 
 	cd $VAG_HOME
 else 
 	mkdir -p $VAG_HOME && cd $VAG_HOME
 fi	
 sudo -u vagrant mkdir -p $VAG_HOME/.emacs.d
 sudo -u vagrant ln -sf /vagrant/cstarter.el $VAG_HOME/.emacs.d/init.el
+
+#installing make and other ubuntu essentials for programming
+$INSTALL build-essential && $INSTALL texinfo libtinfo-dev
+
 if [[ ! -f /vagrant/archive/$EMACSPCKG ]]; then
 	mkdir -p /vagrant/archive
 	curl -XGET -O "http://ftp.gnu.org/gnu/emacs/$EMACSPCKG"
@@ -32,7 +37,7 @@ cd $EMACSPCKG
 make
 sudo make install
 
-#clean directory
+#cleaning directory
 cd $VAG_HOME
 rm -rf $EMACSVERSION
 echo "Setup done..."
