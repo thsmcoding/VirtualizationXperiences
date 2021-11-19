@@ -8,7 +8,22 @@
 (defun not-install-pckges(packages)
 	(delq nil
 		(mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
-		
+
+(let ((need-installation (not-install-pckges local-pckges)))
+  (when need-installation
+    (progn
+      (package-refresh-contents)
+      (dolist (p need-installation)
+	      (package-install p)))))
+
+
+
+
+
+;;AUTO-COMPLETE
+(require 'auto-complete-config)
+(ac-config-default)
+
 ;;GETTING YASNIPPET
 (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
 (require 'yasnippet)
