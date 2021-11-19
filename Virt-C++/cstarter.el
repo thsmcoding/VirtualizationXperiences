@@ -1,9 +1,9 @@
-;;Package setup
+;;PACKAGE SETUP
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
 	'("melpa" . "https://melpa.org/packages/") t)
-(defvar local-pckges '(yasnippet-snippets auto-complete ))
+(defvar local-pckges '(yasnippet-snippets auto-complete use-package ))
 
 (defun not-install-pckges(packages)
 	(delq nil
@@ -16,10 +16,16 @@
       (dolist (p need-installation)
 	      (package-install p)))))
 
-
-
-
-
+;;USE-PACKAGE
+(add-to-list 'load-path "~/.emacs.d/site-lisp/use-package")
+(require 'use-package)
+(with-eval-after-load 'info
+  (info-initialize)
+  (add-to-list 'Info-directory-list
+	       "~/.emacs.d/site-lisp/use-package/"))
+(use-package try :ensure t)
+(use-package which-key :ensure t :config (which-key-mode))
+	     
 ;;AUTO-COMPLETE
 (require 'auto-complete-config)
 (ac-config-default)
