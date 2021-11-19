@@ -2,14 +2,26 @@
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
-	'("melpa" . "http://melpa.org/packages/") t)
-(defvar local-pckges '(yasnippet-snippets ))
+	'("melpa" . "https://melpa.org/packages/") t)
+(defvar local-pckges '(yasnippet-snippets auto-complete ))
 
 (defun not-install-pckges(packages)
 	(delq nil
 		(mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
-
-
+		
 ;;GETTING YASNIPPET
+(add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
 (require 'yasnippet)
-(yas-global-mode +1)
+(yas-global-mode 1)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(yasnippet-snippets)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
