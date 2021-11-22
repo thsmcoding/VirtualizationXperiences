@@ -55,4 +55,40 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )    
- ))
+))
+
+;;FLYCHECK
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+
+;;C++ FONT PACKAGE
+(use-package modern-cpp-font-lock
+  :ensure t)
+
+
+;; (defun c-compile ()
+;;   (interactive)
+;;   (unless (or (file-exists-p "Makefile") (file-exists-p "makefile"))
+;;     (set (make-local-variable 'compile-command)
+;; 	 (let ((file (file-name-nondirectory buffer-file-name)))
+;; 	   (format "%s -o %s %s"
+;; 		   (if ( equal (file-name-extension file) "cpp") "g++" "gcc" )
+;; 		   (file-name-sans-extension file)
+;; 		   file)))
+;;     (compile compile-command)))
+;; (global-set-key [f7] 'c-compile)
+
+(require 'compile)
+(add-hook 'c++-hook-mode
+	  (lambda ()
+	    (unless (or (file-exists-p "Makefile") (file-exists-p "makefile"))
+			(set (make-local-variable  'compile-command)
+			     (let ((file (file-name-nondirectory buffer-file-name)))
+			       (format "%s -c -o %s.o %s %s"
+				       (or (getenv "CC") "gcc")
+				       (file-name-sans-extension file)
+				       (or (getenv "CPPFLAGS") "-DDEBUG=9")
+				       (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+				       file))))))
